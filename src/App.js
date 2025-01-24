@@ -58,52 +58,56 @@ function App() {
     <div className="App">
       <div className="meme-generator">
         <h1>Create a Meme!</h1>
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+          }}
+        >
+          <div className="input-container">
+            {/* Top Text Label */}
+            <label htmlFor="topText" className="input-label">
+              Top text
+            </label>
+            <input
+              id="topText"
+              placeholder="Enter top text"
+              value={topText} // Controlled input
+              onChange={handleTopTextChange} // Update state on input change
+            />
 
-        <div className="input-container">
-          {/* Top Text Label */}
-          <label htmlFor="topText" className="input-label">
-            Top text
-          </label>
-          <input
-            id="topText"
-            placeholder="Enter top text"
-            value={topText} // Controlled input
-            onChange={handleTopTextChange} // Update state on input change
-          />
+            {/* Bottom Text Label */}
+            <label htmlFor="bottomText" className="input-label">
+              Bottom text
+            </label>
+            <input
+              id="bottomText"
+              placeholder="Enter bottom text"
+              value={bottomText} // Controlled input
+              onChange={handleBottomTextChange} // Update state on input change
+            />
 
-          {/* Bottom Text Label */}
-          <label htmlFor="bottomText" className="input-label">
-            Bottom text
-          </label>
-          <input
-            id="bottomText"
-            placeholder="Enter bottom text"
-            value={bottomText} // Controlled input
-            onChange={handleBottomTextChange} // Update state on input change
-          />
+            {/* Meme Template Selector with Label */}
+            <label htmlFor="template" className="input-label">
+              Meme template
+            </label>
+            <select
+              id="template"
+              value={selectedTemplate}
+              onChange={handleTemplateChange} // Change template on selection
+              onInput={handleTemplateInputChange} // Detect user input for special cases
+            >
+              {memeTemplates.map((template) => (
+                <option key={`template-${template}`} value={template}>
+                  {template.charAt(0).toUpperCase() +
+                    template.slice(1).replace('-', ' ')}
+                </option>
+              ))}
+            </select>
 
-          {/* Meme Template Selector with Label */}
-          <label htmlFor="template" className="input-label">
-            Meme template
-          </label>
-          <select
-            id="template"
-            value={selectedTemplate}
-            onChange={handleTemplateChange} // Change template on selection
-            onInput={handleTemplateInputChange} // Detect user input for special cases
-          >
-            {memeTemplates.map((template) => (
-              <option key={`template-${template}`} value={template}>
-                {template.charAt(0).toUpperCase() +
-                  template.slice(1).replace('-', ' ')}
-              </option>
-            ))}
-          </select>
-
-          {/* Generate Meme Button */}
-          <button onClick={generateMeme}>Generate Meme</button>
-        </div>
-
+            {/* Generate Meme Button */}
+            <button onClick={generateMeme}>Generate Meme</button>
+          </div>
+        </form>
         {/* Meme Preview */}
         <div className="meme-output">
           <h2>Your Generated Meme:</h2>
