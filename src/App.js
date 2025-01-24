@@ -62,7 +62,7 @@ function App() {
         <div className="input-container">
           {/* Top Text Label */}
           <label htmlFor="topText" className="input-label">
-            Top Text
+            Top text
           </label>
           <input
             id="topText"
@@ -73,7 +73,7 @@ function App() {
 
           {/* Bottom Text Label */}
           <label htmlFor="bottomText" className="input-label">
-            Bottom Text
+            Bottom text
           </label>
           <input
             id="bottomText"
@@ -84,7 +84,7 @@ function App() {
 
           {/* Meme Template Selector with Label */}
           <label htmlFor="template" className="input-label">
-            Meme Template
+            Meme template
           </label>
           <select
             id="template"
