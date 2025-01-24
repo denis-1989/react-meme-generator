@@ -76,7 +76,6 @@ function App() {
             Bottom Text
           </label>
           <input
-            type="text"
             id="bottomText"
             placeholder="Enter bottom text"
             value={bottomText} // Controlled input
@@ -93,8 +92,8 @@ function App() {
             onChange={handleTemplateChange} // Change template on selection
             onInput={handleTemplateInputChange} // Detect user input for special cases
           >
-            {memeTemplates.map((template, index) => (
-              <option key={index} value={template}>
+            {memeTemplates.map((template) => (
+              <option key={`template-${template}`} value={template}>
                 {template.charAt(0).toUpperCase() +
                   template.slice(1).replace('-', ' ')}
               </option>
