@@ -5,7 +5,7 @@ function App() {
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
   const [memeImageUrl, setMemeImageUrl] = useState(
-    'https://via.placeholder.com/500x300?text=Your+Meme+Here',
+    'https://memegen.link/drake/hi/folks.png',
   );
   const [selectedTemplate, setSelectedTemplate] = useState('doge');
 
