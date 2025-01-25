@@ -10,8 +10,8 @@ function App() {
   const [selectedTemplate, setSelectedTemplate] = useState('doge');
 
   const memeTemplates = [
-    'doge',
     'drake',
+    'doge',
     'sad-biden',
     'sad-obama',
     'spiderman',
@@ -123,7 +123,6 @@ function App() {
         <button onClick={generateMeme} data-test-id="generate-meme">
           Generate meme
         </button>
-
         {memeImageUrl && (
           <button onClick={downloadMeme} className="download-button">
             Download
