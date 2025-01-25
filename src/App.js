@@ -124,6 +124,12 @@ function App() {
           Generate meme
         </button>
 
+        {memeImageUrl && (
+          <button onClick={downloadMeme} className="download-button">
+            Download
+          </button>
+        )}
+
         {/* Logo Display */}
         <div className="logo-container">
           {/* External logo from Memegen */}
