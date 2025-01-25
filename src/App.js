@@ -120,14 +120,10 @@ function App() {
           />
         </div>
 
-        <button onClick={generateMeme} data-test-id="generate-meme">
-          Generate meme
+        {/* Download Meme Button */}
+        <button onClick={downloadMeme} className="download-button">
+          Download
         </button>
-        {memeImageUrl && (
-          <button onClick={downloadMeme} className="download-button">
-            Download
-          </button>
-        )}
 
         {/* Logo Display */}
         <div className="logo-container">
