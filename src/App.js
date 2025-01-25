@@ -34,13 +34,13 @@ function App() {
 
   // Generate meme image URL based on selected template and input text
   const generateMeme = () => {
-    const memeUrl = `https://memegen.link/${selectedTemplate}/${topText}/${bottomText}.png`;
+    const memeUrl = `https://api.memegen.link/images/${selectedTemplate}/${topText}/${bottomText}.png`;
     setMemeImageUrl(memeUrl);
   };
 
   // Handle the special case when user types "doge"
   const handleTemplateInputChange = (event) => {
-    const inputValue = event.target.value;
+    const inputValue = event.currentTarget.value;
     if (inputValue.toLowerCase() === 'doge') {
       setSelectedTemplate('doge'); // Automatically select "doge" template
     }
@@ -61,6 +61,7 @@ function App() {
         <form
           onSubmit={(event) => {
             event.preventDefault();
+            generateMeme();
           }}
         >
           <div className="input-container">
@@ -105,7 +106,7 @@ function App() {
             </select>
 
             {/* Generate Meme Button */}
-            <button onClick={generateMeme}>Generate Meme</button>
+            <button>Generate Meme</button>
           </div>
         </form>
         {/* Meme Preview */}
