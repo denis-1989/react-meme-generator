@@ -116,18 +116,16 @@ function App() {
           </div>
         </form>
 
-        {/* Meme Preview */}
-        {memeImageUrl && (
-          <div className="meme-output">
-            <h2>Your Generated Meme:</h2>
-            <img
-              src={memeImageUrl}
-              alt="Generated Meme"
-              className="meme-image"
-              data-test-id="meme-image"
-            />
-          </div>
-        )}
+        {/* Meme Preview (Always render image element but with null src initially) */}
+        <div className="meme-output">
+          <h2>Your Generated Meme:</h2>
+          <img
+            src={memeImageUrl || null} // Set src to null initially, or to the generated meme URL
+            alt="Generated Meme"
+            className="meme-image"
+            data-test-id="meme-image"
+          />
+        </div>
 
         {/* Only render the Download button if memeImageUrl is set */}
         {memeImageUrl && (
