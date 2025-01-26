@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 function App() {
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
-  const [memeImageUrl, setMemeImageUrl] = useState(null); // Set initial state to `null`
+  const [memeImageUrl, setMemeImageUrl] = useState(null); // Start with null (empty src)
   const [selectedTemplate, setSelectedTemplate] = useState('doge');
 
   const memeTemplates = [
@@ -32,7 +32,6 @@ function App() {
 
   // Generate meme image URL based on selected template and input text
   const generateMeme = () => {
-    // Encode the top and bottom text to handle spaces and special characters
     const encodedTopText = encodeURIComponent(topText);
     const encodedBottomText = encodeURIComponent(bottomText);
 
@@ -56,8 +55,8 @@ function App() {
     }
   };
 
+  // Effect to track memeImageUrl changes
   useEffect(() => {
-    // Log memeImageUrl changes for debugging
     console.log('Meme Image URL updated:', memeImageUrl);
   }, [memeImageUrl]);
 
@@ -116,11 +115,14 @@ function App() {
           </div>
         </form>
 
-        {/* Meme Preview (Always render image element but with null src initially) */}
+        {/* Meme Preview (Always render image element with placeholder src initially) */}
         <div className="meme-output">
           <h2>Your Generated Meme:</h2>
           <img
-            src={memeImageUrl || null} // Set src to null initially, or to the generated meme URL
+            src={
+              memeImageUrl ||
+              'https://via.placeholder.com/500x300?text=Meme+Preview'
+            } // Use a placeholder initially
             alt="Generated Meme"
             className="meme-image"
             data-test-id="meme-image"
