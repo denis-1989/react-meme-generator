@@ -1,11 +1,11 @@
 import './App.css';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 function App() {
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
   const [memeImageUrl, setMemeImageUrl] = useState(
-    'https://api.memegen.link/images/drake/hi/folks.png',
+    'https://memegen.link/drake/hi/folks.png',
   );
   const [selectedTemplate, setSelectedTemplate] = useState('doge');
 
@@ -34,17 +34,7 @@ function App() {
 
   // Generate meme image URL based on selected template and input text
   const generateMeme = () => {
-    // Encode the top and bottom text to handle spaces and special characters
-    const encodedTopText = encodeURIComponent(topText);
-    const encodedBottomText = encodeURIComponent(bottomText);
-
-    // Generate the meme URL with the encoded text
-    const memeUrl = `https://api.memegen.link/images/${selectedTemplate}/${encodedTopText}/${encodedBottomText}.png?${new Date().getTime()}`;
-
-    // Log the generated meme URL for debugging purposes
-    console.log('Generated Meme URL:', memeUrl);
-
-    // Update the meme image URL state
+    const memeUrl = `https://memegen.link/${selectedTemplate}/${topText}/${bottomText}.png`;
     setMemeImageUrl(memeUrl);
   };
 
@@ -63,11 +53,6 @@ function App() {
     link.download = 'meme.png'; // Set default file name for download
     link.click(); // Trigger the download
   };
-
-  // Log memeImageUrl changes for debugging
-  useEffect(() => {
-    console.log('Meme Image URL has changed:', memeImageUrl);
-  }, [memeImageUrl]); // This will run every time memeImageUrl changes
 
   return (
     <div className="App">
@@ -124,7 +109,6 @@ function App() {
             <button>Generate Meme</button>
           </div>
         </form>
-
         {/* Meme Preview */}
         <div className="meme-output">
           <h2>Your Generated Meme:</h2>
@@ -136,12 +120,10 @@ function App() {
           />
         </div>
 
-        {/* Only render Download button if memeImageUrl is set */}
-        {memeImageUrl && (
-          <button onClick={downloadMeme} className="download-button">
-            Download
-          </button>
-        )}
+        {/* Download Meme Button */}
+        <button onClick={downloadMeme} className="download-button">
+          Download
+        </button>
 
         {/* Logo Display */}
         <div className="logo-container">
