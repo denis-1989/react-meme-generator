@@ -5,13 +5,13 @@ function App() {
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
   const [memeImageUrl, setMemeImageUrl] = useState(
-    'https://memegen.link/drake/hi/folks.png',
+    'https://api.memegen.link/images/drake/hi/folks.png',
   );
   const [selectedTemplate, setSelectedTemplate] = useState('doge');
 
   const memeTemplates = [
-    'drake',
     'doge',
+    'drake',
     'sad-biden',
     'sad-obama',
     'spiderman',
@@ -35,7 +35,8 @@ function App() {
   // Generate meme image URL based on selected template and input text
   const generateMeme = () => {
     const memeUrl = `https://api.memegen.link/images/${selectedTemplate}/${topText}/${bottomText}.png`;
-    setMemeImageUrl(memeUrl);
+    console.log('Generated Meme URL:', memeUrl); // Log the URL for debugging
+    setMemeImageUrl(memeUrl); // Set meme URL in state
   };
 
   // Handle the special case when user types "doge"
@@ -109,6 +110,7 @@ function App() {
             <button>Generate Meme</button>
           </div>
         </form>
+
         {/* Meme Preview */}
         <div className="meme-output">
           <h2>Your Generated Meme:</h2>
@@ -120,10 +122,12 @@ function App() {
           />
         </div>
 
-        {/* Download Meme Button */}
-        <button onClick={downloadMeme} className="download-button">
-          Download
-        </button>
+        {/* Only render Download button if memeImageUrl is set */}
+        {memeImageUrl && (
+          <button onClick={downloadMeme} className="download-button">
+            Download
+          </button>
+        )}
 
         {/* Logo Display */}
         <div className="logo-container">
