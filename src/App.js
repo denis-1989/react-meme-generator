@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 function App() {
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
-  const [memeImageUrl, setMemeImageUrl] = useState(null); // Start with null (empty src)
+  const [memeImageUrl, setMemeImageUrl] = useState(null); // Set initial state to `null`
   const [selectedTemplate, setSelectedTemplate] = useState('doge');
 
   const memeTemplates = [
@@ -115,17 +115,14 @@ function App() {
           </div>
         </form>
 
-        {/* Meme Preview (Always render image element with placeholder src initially) */}
+        {/* Meme Preview (Always render image element with null src initially) */}
         <div className="meme-output">
           <h2>Your Generated Meme:</h2>
           <img
-            src={
-              memeImageUrl ||
-              'https://via.placeholder.com/500x300?text=Meme+Preview'
-            } // Use a placeholder initially
-            alt="Generated Meme"
+            src={memeImageUrl || null} // Set src to null initially
+            alt="Meme will appear here" // Fallback alt text
             className="meme-image"
-            data-test-id="meme-image"
+            data-test-id="meme-image" // Always have this attribute for testing
           />
         </div>
 
