@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 function App() {
   const [topText, setTopText] = useState('');
@@ -34,9 +34,18 @@ function App() {
 
   // Generate meme image URL based on selected template and input text
   const generateMeme = () => {
-    const memeUrl = `https://api.memegen.link/images/${selectedTemplate}/${topText}/${bottomText}.png`;
-    console.log('Generated Meme URL:', memeUrl); // Log the URL for debugging
-    setMemeImageUrl(memeUrl); // Set meme URL in state
+    // Encode the top and bottom text to handle spaces and special characters
+    const encodedTopText = encodeURIComponent(topText);
+    const encodedBottomText = encodeURIComponent(bottomText);
+
+    // Generate the meme URL with the encoded text
+    const memeUrl = `https://api.memegen.link/images/${selectedTemplate}/${encodedTopText}/${encodedBottomText}.png?${new Date().getTime()}`;
+
+    // Log the generated meme URL for debugging purposes
+    console.log('Generated Meme URL:', memeUrl);
+
+    // Update the meme image URL state
+    setMemeImageUrl(memeUrl);
   };
 
   // Handle the special case when user types "doge"
@@ -54,6 +63,11 @@ function App() {
     link.download = 'meme.png'; // Set default file name for download
     link.click(); // Trigger the download
   };
+
+  // Log memeImageUrl changes for debugging
+  useEffect(() => {
+    console.log('Meme Image URL has changed:', memeImageUrl);
+  }, [memeImageUrl]); // This will run every time memeImageUrl changes
 
   return (
     <div className="App">
