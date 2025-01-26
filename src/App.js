@@ -4,9 +4,7 @@ import React, { useEffect, useState } from 'react';
 function App() {
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
-  const [memeImageUrl, setMemeImageUrl] = useState(
-    'https://api.memegen.link/images/drake/hi/folks.png',
-  );
+  const [memeImageUrl, setMemeImageUrl] = useState(null); // Set initial state to `null`
   const [selectedTemplate, setSelectedTemplate] = useState('doge');
 
   const memeTemplates = [
@@ -38,7 +36,7 @@ function App() {
     const encodedTopText = encodeURIComponent(topText);
     const encodedBottomText = encodeURIComponent(bottomText);
 
-    // Generate the meme URL with the encoded text
+    // Generate the meme URL with the encoded text and avoid caching issues
     const memeUrl = `https://api.memegen.link/images/${selectedTemplate}/${encodedTopText}/${encodedBottomText}.png?${new Date().getTime()}`;
 
     // Log the generated meme URL for debugging purposes
@@ -48,26 +46,20 @@ function App() {
     setMemeImageUrl(memeUrl);
   };
 
-  // Handle the special case when user types "doge"
-  const handleTemplateInputChange = (event) => {
-    const inputValue = event.currentTarget.value;
-    if (inputValue.toLowerCase() === 'doge') {
-      setSelectedTemplate('doge'); // Automatically select "doge" template
+  // Function to download the meme image
+  const downloadMeme = () => {
+    if (memeImageUrl) {
+      const link = document.createElement('a');
+      link.href = memeImageUrl; // Set the meme image URL as the download link
+      link.download = 'meme.png'; // Set default file name for download
+      link.click(); // Trigger the download
     }
   };
 
-  // Function to download the meme image
-  const downloadMeme = () => {
-    const link = document.createElement('a');
-    link.href = memeImageUrl; // Set the meme image URL as the download link
-    link.download = 'meme.png'; // Set default file name for download
-    link.click(); // Trigger the download
-  };
-
-  // Log memeImageUrl changes for debugging
   useEffect(() => {
-    console.log('Meme Image URL has changed:', memeImageUrl);
-  }, [memeImageUrl]); // This will run every time memeImageUrl changes
+    // Log memeImageUrl changes for debugging
+    console.log('Meme Image URL updated:', memeImageUrl);
+  }, [memeImageUrl]);
 
   return (
     <div className="App">
@@ -110,7 +102,6 @@ function App() {
               id="template"
               value={selectedTemplate}
               onChange={handleTemplateChange} // Change template on selection
-              onInput={handleTemplateInputChange} // Detect user input for special cases
             >
               {memeTemplates.map((template) => (
                 <option key={`template-${template}`} value={template}>
@@ -121,22 +112,24 @@ function App() {
             </select>
 
             {/* Generate Meme Button */}
-            <button>Generate Meme</button>
+            <button type="submit">Generate Meme</button>
           </div>
         </form>
 
         {/* Meme Preview */}
-        <div className="meme-output">
-          <h2>Your Generated Meme:</h2>
-          <img
-            src={memeImageUrl}
-            alt="Generated Meme"
-            className="meme-image"
-            data-test-id="meme-image" // Adding the data-test-id attribute
-          />
-        </div>
+        {memeImageUrl && (
+          <div className="meme-output">
+            <h2>Your Generated Meme:</h2>
+            <img
+              src={memeImageUrl}
+              alt="Generated Meme"
+              className="meme-image"
+              data-test-id="meme-image"
+            />
+          </div>
+        )}
 
-        {/* Only render Download button if memeImageUrl is set */}
+        {/* Only render the Download button if memeImageUrl is set */}
         {memeImageUrl && (
           <button onClick={downloadMeme} className="download-button">
             Download
@@ -145,7 +138,6 @@ function App() {
 
         {/* Logo Display */}
         <div className="logo-container">
-          {/* External logo from Memegen */}
           <img
             src="https://memegen.link/favicon.ico"
             alt="Memegen Logo"
