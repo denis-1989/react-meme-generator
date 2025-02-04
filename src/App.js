@@ -5,9 +5,7 @@ export default function App() {
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState('doge');
-  const [memeImageUrl, setMemeImageUrl] = useState(
-    `https://memegen.link/${selectedTemplate}/_/_/_.png`,
-  );
+  const [memeImageUrl, setMemeImageUrl] = useState('');
 
   const memeTemplates = [
     'doge',
@@ -18,40 +16,36 @@ export default function App() {
     'firsttry',
   ];
 
+  // Function to format text (replace spaces with underscores)
+  const formatText = (text) => (text ? text.replace(/ /g, '_') : '_');
+
   // Effect to update meme URL dynamically when user inputs change
   useEffect(() => {
-    const memeUrl = `https://memegen.link/${selectedTemplate}/${topText || '_'}/${bottomText || '_'}.png`;
+    const memeUrl = `https://api.memegen.link/images/${selectedTemplate}/${formatText(topText)}/${formatText(bottomText)}.png`;
     setMemeImageUrl(memeUrl);
   }, [topText, bottomText, selectedTemplate]);
 
-  // Handle input changes for top and bottom text
-  const handleTopTextChange = (event) => {
-    setTopText(event.target.value);
-  };
-
-  const handleBottomTextChange = (event) => {
-    setBottomText(event.target.value);
-  };
-
-  // Handle template selection change
-  const handleTemplateChange = (event) => {
+  // Handle input changes
+  const handleTopTextChange = (event) => setTopText(event.target.value);
+  const handleBottomTextChange = (event) => setBottomText(event.target.value);
+  const handleTemplateChange = (event) =>
     setSelectedTemplate(event.target.value);
-  };
-
-  // Handle the special case when user types "doge"
-  const handleTemplateInputChange = (event) => {
-    const inputValue = event.currentTarget.value.toLowerCase();
-    if (inputValue === 'doge') {
-      setSelectedTemplate('doge');
-    }
-  };
 
   // Function to download the meme image
-  const downloadMeme = () => {
-    const link = document.createElement('a');
-    link.href = memeImageUrl;
-    link.download = 'meme.png';
-    link.click();
+  const downloadMeme = async () => {
+    try {
+      const response = await fetch(memeImageUrl);
+      const blob = await response.blob();
+      const link = document.createElement('a');
+
+      link.href = URL.createObjectURL(blob);
+      link.download = 'meme.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error downloading meme:', error);
+    }
   };
 
   return (
@@ -60,7 +54,6 @@ export default function App() {
         <h1>Create a Meme!</h1>
         <form onSubmit={(event) => event.preventDefault()}>
           <div className="input-container">
-            {/* Top Text Label */}
             <label htmlFor="topText" className="input-label">
               Top text
             </label>
@@ -71,7 +64,6 @@ export default function App() {
               onChange={handleTopTextChange}
             />
 
-            {/* Bottom Text Label */}
             <label htmlFor="bottomText" className="input-label">
               Bottom text
             </label>
@@ -82,7 +74,6 @@ export default function App() {
               onChange={handleBottomTextChange}
             />
 
-            {/* Meme Template Selector with Label */}
             <label htmlFor="template" className="input-label">
               Meme template
             </label>
@@ -90,7 +81,6 @@ export default function App() {
               id="template"
               value={selectedTemplate}
               onChange={handleTemplateChange}
-              onInput={handleTemplateInputChange}
             >
               {memeTemplates.map((template) => (
                 <option key={`template-${template}`} value={template}>
