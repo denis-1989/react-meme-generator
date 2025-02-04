@@ -25,6 +25,14 @@ export default function App() {
     setMemeImageUrl(memeUrl);
   }, [topText, bottomText, selectedTemplate]);
 
+  // Handle template input change (when user types in the select field)
+  const handleTemplateInputChange = (event) => {
+    const inputValue = event.target.value.toLowerCase();
+    if (inputValue === 'doge') {
+      setSelectedTemplate('doge');
+    }
+  };
+
   // Handle input changes
   const handleTopTextChange = (event) => setTopText(event.target.value);
   const handleBottomTextChange = (event) => setBottomText(event.target.value);
@@ -81,6 +89,7 @@ export default function App() {
               id="template"
               value={selectedTemplate}
               onChange={handleTemplateChange}
+              onInput={handleTemplateInputChange}
             >
               {memeTemplates.map((template) => (
                 <option key={`template-${template}`} value={template}>
