@@ -1,13 +1,13 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-function App() {
+export default function App() {
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
-  const [memeImageUrl, setMemeImageUrl] = useState(
-    'https://memegen.link/drake/hi/folks.png',
-  );
   const [selectedTemplate, setSelectedTemplate] = useState('doge');
+  const [memeImageUrl, setMemeImageUrl] = useState(
+    `https://memegen.link/${selectedTemplate}/_/_/_.png`,
+  );
 
   const memeTemplates = [
     'doge',
@@ -17,6 +17,12 @@ function App() {
     'spiderman',
     'firsttry',
   ];
+
+  // Effect to update meme URL dynamically when user inputs change
+  useEffect(() => {
+    const memeUrl = `https://memegen.link/${selectedTemplate}/${topText || '_'}/${bottomText || '_'}.png`;
+    setMemeImageUrl(memeUrl);
+  }, [topText, bottomText, selectedTemplate]);
 
   // Handle input changes for top and bottom text
   const handleTopTextChange = (event) => {
@@ -32,38 +38,27 @@ function App() {
     setSelectedTemplate(event.target.value);
   };
 
-  // Generate meme image URL based on selected template and input text
-  const generateMeme = () => {
-    const memeUrl = `https://memegen.link/${selectedTemplate}/${topText}/${bottomText}.png`;
-    setMemeImageUrl(memeUrl);
-  };
-
   // Handle the special case when user types "doge"
   const handleTemplateInputChange = (event) => {
-    const inputValue = event.currentTarget.value;
-    if (inputValue.toLowerCase() === 'doge') {
-      setSelectedTemplate('doge'); // Automatically select "doge" template
+    const inputValue = event.currentTarget.value.toLowerCase();
+    if (inputValue === 'doge') {
+      setSelectedTemplate('doge');
     }
   };
 
   // Function to download the meme image
   const downloadMeme = () => {
     const link = document.createElement('a');
-    link.href = memeImageUrl; // Set the meme image URL as the download link
-    link.download = 'meme.png'; // Set default file name for download
-    link.click(); // Trigger the download
+    link.href = memeImageUrl;
+    link.download = 'meme.png';
+    link.click();
   };
 
   return (
     <div className="App">
       <div className="meme-generator">
         <h1>Create a Meme!</h1>
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            generateMeme();
-          }}
-        >
+        <form onSubmit={(event) => event.preventDefault()}>
           <div className="input-container">
             {/* Top Text Label */}
             <label htmlFor="topText" className="input-label">
@@ -72,8 +67,8 @@ function App() {
             <input
               id="topText"
               placeholder="Enter top text"
-              value={topText} // Controlled input
-              onChange={handleTopTextChange} // Update state on input change
+              value={topText}
+              onChange={handleTopTextChange}
             />
 
             {/* Bottom Text Label */}
@@ -83,8 +78,8 @@ function App() {
             <input
               id="bottomText"
               placeholder="Enter bottom text"
-              value={bottomText} // Controlled input
-              onChange={handleBottomTextChange} // Update state on input change
+              value={bottomText}
+              onChange={handleBottomTextChange}
             />
 
             {/* Meme Template Selector with Label */}
@@ -94,8 +89,8 @@ function App() {
             <select
               id="template"
               value={selectedTemplate}
-              onChange={handleTemplateChange} // Change template on selection
-              onInput={handleTemplateInputChange} // Detect user input for special cases
+              onChange={handleTemplateChange}
+              onInput={handleTemplateInputChange}
             >
               {memeTemplates.map((template) => (
                 <option key={`template-${template}`} value={template}>
@@ -104,11 +99,9 @@ function App() {
                 </option>
               ))}
             </select>
-
-            {/* Generate Meme Button */}
-            <button>Generate Meme</button>
           </div>
         </form>
+
         {/* Meme Preview */}
         <div className="meme-output">
           <h2>Your Generated Meme:</h2>
@@ -116,7 +109,7 @@ function App() {
             src={memeImageUrl}
             alt="Generated Meme"
             className="meme-image"
-            data-test-id="meme-image" // Adding the data-test-id attribute
+            data-test-id="meme-image"
           />
         </div>
 
@@ -127,7 +120,6 @@ function App() {
 
         {/* Logo Display */}
         <div className="logo-container">
-          {/* External logo from Memegen */}
           <img
             src="https://memegen.link/favicon.ico"
             alt="Memegen Logo"
@@ -138,5 +130,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
